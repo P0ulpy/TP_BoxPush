@@ -29,7 +29,10 @@ namespace StarterAssets
 		{
 			if (instance == null)
 				instance = this;
+		}
 
+		private void Start()
+		{
 			GameManager.instance.player = gameObject;
 		}
 

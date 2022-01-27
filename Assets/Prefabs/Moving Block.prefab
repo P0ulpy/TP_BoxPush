@@ -109,3 +109,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pushRayMaxDistance: 6
+  moveLerpTime: 2

@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.Serialization;
 
 [RequireComponent(typeof(MeshRenderer))]
 public class Dalle : MonoBehaviour
@@ -7,8 +6,6 @@ public class Dalle : MonoBehaviour
     [SerializeField] private Material normalMaterial;
     [SerializeField] private Material requiredMaterial;
 
-    [SerializeField] private float checkRayMaxDistance = 8;
-    
     public enum Mode { Normal, Required }
 
     public Mode mode
@@ -30,7 +27,23 @@ public class Dalle : MonoBehaviour
     }
 
     private Mode _mode;
-    public bool isFilled;
+
+    public bool IsFilled
+    {
+        get => _isFilled;
+        set
+        {
+            if (value)
+                GameManager.instance.onDalleFilled(this);
+            else
+                GameManager.instance.onDalleEmpty(this);
+
+            _isFilled = value;
+        }
+    }
+
+    private bool _isFilled;
+    
     
     public Transform cubeTransformPosition;
 
@@ -41,20 +54,5 @@ public class Dalle : MonoBehaviour
     {
         _meshRenderer = GetComponent<MeshRenderer>();
         mode = Mode.Normal;
-    }
-
-    private void Update()
-    {
-        if(mode == Mode.Required) CheckIsFilled();
-    }
-
-    private void CheckIsFilled()
-    {
-        Collider[] hitterColliders = Physics.OverlapSphere(transform.position, 1, LayerMask.NameToLayer("Moving Block"));
-        
-        if (hitterColliders[0])
-        {
-            isFilled = true;
-        }
     }
 }
